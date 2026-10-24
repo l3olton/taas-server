@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TaaSServer.App/TaaSServer.App.csproj" />
+  <Project Path="TaaSServer.Db/TaaSServer.Db.csproj" />
+  <Project Path="TaaSServer.Domain/TaaSServer.Domain.csproj" />
+  <Project Path="TaaSServer.Http/TaaSServer.Http.csproj" />
+</Solution>
