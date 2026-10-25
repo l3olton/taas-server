@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\TaaSServer.Db\TaaSServer.Db.csproj" />
     <ProjectReference Include="..\TaaSServer.Http\TaaSServer.Http.csproj" />
     <ProjectReference Include="..\TaaSServer.Mqtt\TaaSServer.Mqtt.csproj" />
   </ItemGroup>
