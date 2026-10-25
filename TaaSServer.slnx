@@ -3,5 +3,6 @@
   <Project Path="TaaSServer.Db/TaaSServer.Db.csproj" />
   <Project Path="TaaSServer.Domain/TaaSServer.Domain.csproj" />
   <Project Path="TaaSServer.Http/TaaSServer.Http.csproj" />
+  <Project Path="TaaSServer.Mqtt.Tests/TaaSServer.Mqtt.Tests.csproj" />
   <Project Path="TaaSServer.Mqtt/TaaSServer.Mqtt.csproj" />
 </Solution>
