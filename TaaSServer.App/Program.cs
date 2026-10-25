@@ -7,6 +7,8 @@ using TaaSServer.App.SecretClient;
 using TaaSServer.Domain.Ports;
 using TaaSServer.Domain.Services;
 using TaaSServer.Http;
+using TaaSServer.Mqtt;
+using TaaSServer.Mqtt.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,10 @@ awsOptions.Credentials = new BasicAWSCredentials(builder.Configuration["AWS:Acce
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonSecretsManager>();
 builder.Services.AddSingleton<ISecretClient, SecretsManagerSecretClient>();
+
+builder.Services.Configure<MqttBrokerOptions>(builder.Configuration.GetSection(MqttBrokerOptions.SectionName));
+builder.Services.AddSingleton<BaseMqttHandler, TemperatureRecordingHandler>();
+builder.Services.AddHostedService<MqttHostedService>();
 
 var app = builder.Build();
 

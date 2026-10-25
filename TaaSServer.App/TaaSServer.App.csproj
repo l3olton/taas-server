@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaaSServer.Http\TaaSServer.Http.csproj" />
+    <ProjectReference Include="..\TaaSServer.Mqtt\TaaSServer.Mqtt.csproj" />
   </ItemGroup>
 
   <ItemGroup>
