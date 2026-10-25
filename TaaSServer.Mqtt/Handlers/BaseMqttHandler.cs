@@ -29,5 +29,5 @@ public abstract class BaseMqttHandler<T> : BaseMqttHandler
         await HandleAsync(message);
     }
 
-    public abstract Task HandleAsync(T message);
+    protected abstract Task HandleAsync(T message);
 }

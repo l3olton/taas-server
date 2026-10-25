@@ -12,7 +12,7 @@ public class TemperatureRecordingHandler(
 {
     public override string Topic => "temperature/recording";
 
-    public override async Task HandleAsync(TemperatureRecording temperatureRecording)
+    protected override async Task HandleAsync(TemperatureRecording temperatureRecording)
     {
         try
         {
