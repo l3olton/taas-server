@@ -41,6 +41,8 @@ public class TemperatureRecordingHandler(
         {
             throw new Exception($"MQTT Handler: Error saving temperature recording: {ex.Message}");
         }
-        logger.LogInformation("MQTT Handler: {DeviceId} {Temperature}", temperatureRecording.DeviceId, temperatureRecording.Temperature);
+
+        logger.LogInformation(
+            $"MQTT Handler: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
     }
 }
