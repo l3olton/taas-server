@@ -4,15 +4,8 @@ using TaaSServer.Domain.Ports;
 
 namespace TaaSServer.App.SecretClient;
 
-public class SecretsManagerSecretClient : ISecretClient
+public class SecretsManagerSecretClient(IAmazonSecretsManager client) : ISecretClient
 {
-    private readonly IAmazonSecretsManager _client;
-
-    public SecretsManagerSecretClient(IAmazonSecretsManager client)
-    {
-        _client = client;
-    }
-
     public async Task<string> GetSecret(string key)
     {
         var request = new GetSecretValueRequest
@@ -20,7 +13,7 @@ public class SecretsManagerSecretClient : ISecretClient
             SecretId = key
         };
 
-        var response = await _client.GetSecretValueAsync(request);
+        var response = await client.GetSecretValueAsync(request);
         return response.SecretString;
     }
 }
