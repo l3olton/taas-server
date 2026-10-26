@@ -4,7 +4,7 @@ using TaaSServer.Domain.Ports;
 
 namespace TaaSServer.Mqtt.Adapters;
 
-public record TemperatureRecording(string Timestamp, string DeviceId, float Temperature);
+public record TemperatureRecording(string Timestamp, string DeviceId, UInt16 Raw);
 
 public class TemperatureRecordingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,
@@ -14,12 +14,13 @@ public class TemperatureRecordingAdapter(
 
     protected override async Task HandleAsync(TemperatureRecording temperatureRecording)
     {
+        var temperature = (temperatureRecording.Raw >>> 7) / 2.0f;
         try
         {
             await temperatureSensorService.SaveTemperatureRecording(new TemperatureRecordingCmd(
                 DateTime.Parse(temperatureRecording.Timestamp),
                 temperatureRecording.DeviceId,
-                temperatureRecording.Temperature));
+                temperature));
         } 
         catch (Exception ex)
         {
@@ -27,6 +28,6 @@ public class TemperatureRecordingAdapter(
         }
 
         logger.LogInformation(
-            $"MQTT adapter: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
+            $"MQTT adapter: {temperatureRecording.DeviceId} {temperatureRecording.Raw} {temperatureRecording.Timestamp}");
     }
 }
