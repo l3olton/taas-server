@@ -4,22 +4,22 @@ using TaaSServer.Domain.Ports;
 
 namespace TaaSServer.Mqtt.Adapters;
 
-public record TemperatureRecording(string Timestamp, string DeviceId, ushort Raw);
+public record ReceiveTemperatureRecordingDto(string Timestamp, string DeviceId, ushort Raw);
 
 public class TemperatureRecordingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,
-    ILogger<TemperatureRecordingAdapter> logger) : BaseMqttAdapter<TemperatureRecording>
+    ILogger<TemperatureRecordingAdapter> logger) : BaseMqttAdapter<ReceiveTemperatureRecordingDto>
 {
     public override string Topic => "temperature/recording";
 
-    protected override async Task HandleAsync(TemperatureRecording temperatureRecording)
+    protected override async Task HandleAsync(ReceiveTemperatureRecordingDto receiveTemperatureRecordingDto)
     {
         try
         {
             await temperatureSensorService.SaveTemperatureRecording(new SaveTemperatureRecordingCmd(
-                DateTime.Parse(temperatureRecording.Timestamp),
-                temperatureRecording.DeviceId,
-                temperatureRecording.Raw));
+                DateTime.Parse(receiveTemperatureRecordingDto.Timestamp),
+                receiveTemperatureRecordingDto.DeviceId,
+                receiveTemperatureRecordingDto.Raw));
         } 
         catch (Exception ex)
         {
@@ -27,6 +27,6 @@ public class TemperatureRecordingAdapter(
         }
 
         logger.LogInformation(
-            $"MQTT adapter: {temperatureRecording.DeviceId} {temperatureRecording.Raw} {temperatureRecording.Timestamp}");
+            $"MQTT adapter: {receiveTemperatureRecordingDto.DeviceId} {receiveTemperatureRecordingDto.Raw} {receiveTemperatureRecordingDto.Timestamp}");
     }
 }
