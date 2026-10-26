@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Amazon.Runtime;
 using Amazon.SecretsManager;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaaSServer.App.SecretClient;
@@ -29,6 +30,9 @@ builder.Services.AddSingleton<ISecretClient, SecretsManagerSecretClient>();
 builder.Services.Configure<MqttBrokerOptions>(builder.Configuration.GetSection(MqttBrokerOptions.SectionName));
 builder.Services.AddSingleton<BaseMqttAdapter, TemperatureReadingAdapter>();
 builder.Services.AddHostedService<MqttHostedService>();
+
+builder.Services.AddDbContextPool<TemperatureReadingContext>(opt =>
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("dbConnectionString")));
 
 var app = builder.Build();
 
