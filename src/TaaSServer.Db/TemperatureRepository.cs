@@ -13,7 +13,8 @@ public class TemperatureRepository(ILogger<TemperatureRepository> logger) : ITem
 
     public Task SaveAsync(TemperatureRecording temperatureRecording)
     {
-        logger.LogInformation("SaveAsync called: {DeviceId} {Temperature} {Timestamp}", temperatureRecording.DeviceId, temperatureRecording.Temperature, temperatureRecording.Timestamp);
+        logger.LogInformation(
+            $"SaveAsync called: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
         return Task.CompletedTask;
     }
 }
