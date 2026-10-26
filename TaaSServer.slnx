@@ -1,8 +1,8 @@
 <Solution>
-  <Project Path="TaaSServer.App/TaaSServer.App.csproj" />
-  <Project Path="TaaSServer.Db/TaaSServer.Db.csproj" />
-  <Project Path="TaaSServer.Domain/TaaSServer.Domain.csproj" />
-  <Project Path="TaaSServer.Http/TaaSServer.Http.csproj" />
-  <Project Path="TaaSServer.Mqtt.Tests/TaaSServer.Mqtt.Tests.csproj" />
-  <Project Path="TaaSServer.Mqtt/TaaSServer.Mqtt.csproj" />
+  <Project Path="src/TaaSServer.App/TaaSServer.App.csproj" />
+  <Project Path="src/TaaSServer.Db/TaaSServer.Db.csproj" />
+  <Project Path="src/TaaSServer.Domain/TaaSServer.Domain.csproj" />
+  <Project Path="src/TaaSServer.Http/TaaSServer.Http.csproj" />
+  <Project Path="src/TaaSServer.Mqtt/TaaSServer.Mqtt.csproj" />
+  <Project Path="test/TaaSServer.Mqtt.Tests/TaaSServer.Mqtt.Tests.csproj" />
 </Solution>

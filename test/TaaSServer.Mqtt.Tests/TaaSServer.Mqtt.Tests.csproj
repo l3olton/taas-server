@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaaSServer.Mqtt\TaaSServer.Mqtt.csproj" />
+    <ProjectReference Include="..\..\src\TaaSServer.Mqtt\TaaSServer.Mqtt.csproj" />
   </ItemGroup>
 
   <ItemGroup>
