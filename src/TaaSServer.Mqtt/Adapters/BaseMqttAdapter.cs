@@ -1,16 +1,16 @@
 using System.Text.Json;
 using MQTTnet;
 
-namespace TaaSServer.Mqtt.Handlers;
+namespace TaaSServer.Mqtt.Adapters;
 
-public abstract class BaseMqttHandler
+public abstract class BaseMqttAdapter
 {
     public abstract string Topic { get; }
 
     public abstract Task HandleAsync(MqttApplicationMessageReceivedEventArgs args);
 }
 
-public abstract class BaseMqttHandler<T> : BaseMqttHandler
+public abstract class BaseMqttAdapter<T> : BaseMqttAdapter
 {
     public override async Task HandleAsync(MqttApplicationMessageReceivedEventArgs args)
     {
@@ -23,7 +23,7 @@ public abstract class BaseMqttHandler<T> : BaseMqttHandler
         }
         catch (Exception ex)
         {
-            throw new Exception($"MQTT handler: JSON payload deserialization failed: {ex.Message}");
+            throw new Exception($"MQTT adapter: JSON payload deserialization failed: {ex.Message}");
         }
 
         await HandleAsync(message);

@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using TaaSServer.Domain.Ports;
-using TaaSServer.Mqtt.Handlers;
+using TaaSServer.Mqtt.Adapters;
 
 namespace TaaSServer.Mqtt;
 
-public class MqttHostedService(IOptions<MqttBrokerOptions> options, ISecretClient secretClient, IEnumerable<BaseMqttHandler> handlers, ILogger<MqttHostedService> logger) : IHostedService
+public class MqttHostedService(IOptions<MqttBrokerOptions> options, ISecretClient secretClient, IEnumerable<BaseMqttAdapter> adapters, ILogger<MqttHostedService> logger) : IHostedService
 {
     private readonly MqttBrokerOptions _options = options.Value;
     private IMqttClient _client;
@@ -22,9 +22,9 @@ public class MqttHostedService(IOptions<MqttBrokerOptions> options, ISecretClien
         _client.ApplicationMessageReceivedAsync += async args =>
         {
             var topic = args.ApplicationMessage.Topic;
-            foreach (var handler in handlers.Where(h => h.Topic == topic))
+            foreach (var adapter in adapters.Where(h => h.Topic == topic))
             {
-                await handler.HandleAsync(args);
+                await adapter.HandleAsync(args);
             }
         };
 
@@ -67,7 +67,7 @@ public class MqttHostedService(IOptions<MqttBrokerOptions> options, ISecretClien
             await _client.ConnectAsync(clientOptions, timeout.Token);
             logger.LogInformation("Connected to MQTT broker at {Host}:{Port}.", _options.Host, _options.Port);
 
-            foreach (var topic in handlers.Select(h => h.Topic).Distinct())
+            foreach (var topic in adapters.Select(h => h.Topic).Distinct())
             {
                 var subscribeOptions = factory.CreateSubscribeOptionsBuilder()
                     .WithTopicFilter(topic)

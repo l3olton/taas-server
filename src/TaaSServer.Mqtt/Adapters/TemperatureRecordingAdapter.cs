@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TaaSServer.Domain.Ports;
 
-namespace TaaSServer.Mqtt.Handlers;
+namespace TaaSServer.Mqtt.Adapters;
 
 public record TemperatureRecording(string Timestamp, string DeviceId, float Temperature);
 
-public class TemperatureRecordingHandler(
+public class TemperatureRecordingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,
-    ILogger<TemperatureRecordingHandler> logger) : BaseMqttHandler<TemperatureRecording>
+    ILogger<TemperatureRecordingAdapter> logger) : BaseMqttAdapter<TemperatureRecording>
 {
     public override string Topic => "temperature/recording";
 
@@ -23,10 +23,10 @@ public class TemperatureRecordingHandler(
         } 
         catch (Exception ex)
         {
-            throw new Exception($"MQTT Handler: Error saving temperature recording: {ex.Message}");
+            throw new Exception($"MQTT adapter: Error saving temperature recording: {ex.Message}");
         }
 
         logger.LogInformation(
-            $"MQTT Handler: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
+            $"MQTT adapter: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
     }
 }

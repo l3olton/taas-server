@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using TaaSServer.Domain.Ports;
 
-namespace TaaSServer.Http.Handlers;
+namespace TaaSServer.Http.Adapters;
 
 [ApiController]
 [Route("/hello")]
-public class HelloHandler([FromServices] IHelloService helloService) : ControllerBase
+public class HelloAdapter([FromServices] IHelloService helloService) : ControllerBase
 {
     [HttpGet]
     public IActionResult Get()
