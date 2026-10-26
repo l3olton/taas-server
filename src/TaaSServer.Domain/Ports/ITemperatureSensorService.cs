@@ -1,11 +1,11 @@
 namespace TaaSServer.Domain.Ports;
 
-public record struct TemperatureRecordingCmd(
+public record struct SaveTemperatureRecordingCmd(
     DateTime Timestamp,
     string DeviceId,
-    float Temperature);
+    UInt16 Raw);
 
 public interface ITemperatureSensorService
 {
-    Task SaveTemperatureRecording(TemperatureRecordingCmd temperatureRecordingCmd);
+    Task SaveTemperatureRecording(SaveTemperatureRecordingCmd saveCmd);
 }

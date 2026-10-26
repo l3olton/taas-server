@@ -7,22 +7,20 @@ namespace TaaSServer.Domain.Services;
 public class TemperatureSensorService(ITemperatureRepository temperatureRepository, ILogger<TemperatureSensorService> logger) : ITemperatureSensorService
 {
 
-    public async Task SaveTemperatureRecording(TemperatureRecordingCmd temperatureRecordingCmd)
+    public async Task SaveTemperatureRecording(SaveTemperatureRecordingCmd saveCmd)
     {
-        var temperatureRecording = new TemperatureRecording(
-            temperatureRecordingCmd.Timestamp,
-            temperatureRecordingCmd.DeviceId,
-            temperatureRecordingCmd.Temperature);
-
+        var temperatureRecording = CreateTemperatureRecording.FromSaveTemperatureRecordingCmd(saveCmd);
+        
         try
         {
             await temperatureRepository.SaveAsync(temperatureRecording);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Domain Service: Error recording temperature reading");
+            logger.LogError(ex, "Domain Service: Error saving temperature reading");
         }
-        
-        logger.LogInformation("Domain Service: {DeviceId} {Temperature}", temperatureRecording.DeviceId, temperatureRecording.Temperature);
+
+        logger.LogInformation(
+            $"Domain Service: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
     }
 }

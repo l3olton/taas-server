@@ -14,13 +14,12 @@ public class TemperatureRecordingAdapter(
 
     protected override async Task HandleAsync(TemperatureRecording temperatureRecording)
     {
-        var temperature = (temperatureRecording.Raw >>> 7) / 2.0f;
         try
         {
-            await temperatureSensorService.SaveTemperatureRecording(new TemperatureRecordingCmd(
+            await temperatureSensorService.SaveTemperatureRecording(new SaveTemperatureRecordingCmd(
                 DateTime.Parse(temperatureRecording.Timestamp),
                 temperatureRecording.DeviceId,
-                temperature));
+                temperatureRecording.Raw));
         } 
         catch (Exception ex)
         {
