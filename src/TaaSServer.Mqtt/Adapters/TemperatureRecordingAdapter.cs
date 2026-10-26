@@ -4,7 +4,7 @@ using TaaSServer.Domain.Ports;
 
 namespace TaaSServer.Mqtt.Adapters;
 
-public record TemperatureRecording(string Timestamp, string DeviceId, UInt16 Raw);
+public record TemperatureRecording(string Timestamp, string DeviceId, ushort Raw);
 
 public class TemperatureRecordingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,

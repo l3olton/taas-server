@@ -3,7 +3,7 @@ namespace TaaSServer.Domain.Ports;
 public record struct SaveTemperatureRecordingCmd(
     DateTime Timestamp,
     string DeviceId,
-    UInt16 Raw);
+    ushort Raw);
 
 public interface ITemperatureSensorService
 {
