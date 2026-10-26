@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TaaSServer.Domain.Ports;
+using TaaSServer.Mqtt.DTOs;
 
 namespace TaaSServer.Mqtt.Adapters;
-
-public record ReceiveTemperatureRecordingDto(string Timestamp, string DeviceId, ushort Raw);
 
 public class TemperatureRecordingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,
@@ -16,10 +15,8 @@ public class TemperatureRecordingAdapter(
     {
         try
         {
-            await temperatureSensorService.SaveTemperatureRecording(new SaveTemperatureRecordingCmd(
-                DateTime.Parse(receiveTemperatureRecordingDto.Timestamp),
-                receiveTemperatureRecordingDto.DeviceId,
-                receiveTemperatureRecordingDto.Raw));
+            var saveCmd = CreateSaveTemperatureRecordingCmd(receiveTemperatureRecordingDto);
+            await temperatureSensorService.SaveTemperatureRecording(saveCmd);
         } 
         catch (Exception ex)
         {
@@ -28,5 +25,13 @@ public class TemperatureRecordingAdapter(
 
         logger.LogInformation(
             $"MQTT adapter: {receiveTemperatureRecordingDto.DeviceId} {receiveTemperatureRecordingDto.Raw} {receiveTemperatureRecordingDto.Timestamp}");
+    }
+    
+    private SaveTemperatureRecordingCmd CreateSaveTemperatureRecordingCmd(ReceiveTemperatureRecordingDto receiveTemperatureRecordingDto)
+    {
+        return new SaveTemperatureRecordingCmd(
+            DateTime.Parse(receiveTemperatureRecordingDto.Timestamp),
+            receiveTemperatureRecordingDto.DeviceId,
+            receiveTemperatureRecordingDto.Raw);
     }
 }
