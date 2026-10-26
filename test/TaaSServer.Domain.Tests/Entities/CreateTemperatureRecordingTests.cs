@@ -4,15 +4,15 @@ using Xunit;
 
 namespace TaaSServer.Domain.Tests.Entities;
 
-public class CreateTemperatureRecordingTests
+public class CreateTemperatureReadingTests
 {
     [Fact]
     public void FromSaveTemperatureRecordingCmd_MapsTimestampAndDeviceId()
     {
         var timestamp = new DateTime(2026, 10, 26, 15, 42, 0, DateTimeKind.Utc);
-        var cmd = new SaveTemperatureRecordingCmd(timestamp, "device-1", 256);
+        var cmd = new SaveTemperatureReadingCmd(timestamp, "device-1", 256);
 
-        var recording = CreateTemperatureRecording.FromSaveTemperatureRecordingCmd(cmd);
+        var recording = CreateTemperatureReading.FromSaveTemperatureReadingCmd(cmd);
 
         Assert.Equal(timestamp, recording.Timestamp);
         Assert.Equal("device-1", recording.DeviceId);
@@ -27,9 +27,9 @@ public class CreateTemperatureRecordingTests
     [InlineData((ushort)65535, 255.5f)]
     public void FromSaveTemperatureRecordingCmd_ConvertsRawValueToFloatTemperature(ushort raw, float expected)
     {
-        var cmd = new SaveTemperatureRecordingCmd(DateTime.UtcNow, "device-1", raw);
+        var cmd = new SaveTemperatureReadingCmd(DateTime.UtcNow, "device-1", raw);
 
-        var recording = CreateTemperatureRecording.FromSaveTemperatureRecordingCmd(cmd);
+        var recording = CreateTemperatureReading.FromSaveTemperatureReadingCmd(cmd);
 
         Assert.Equal(expected, recording.Temperature);
     }

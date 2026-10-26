@@ -7,13 +7,13 @@ using Xunit;
 
 namespace TaaSServer.Mqtt.Tests.Adapters;
 
-public class TemperatureRecordingAdapterTests
+public class TemperatureReadingAdapterTests
 {
     [Fact]
     public async Task HandleAsync_ValidPayload_SavesCommandWithMappedFields()
     {
         var sensorService = new FakeTemperatureSensorService();
-        var adapter = new TemperatureRecordingAdapter(sensorService, NullLogger<TemperatureRecordingAdapter>.Instance);
+        var adapter = new TemperatureReadingAdapter(sensorService, NullLogger<TemperatureReadingAdapter>.Instance);
         var args = CreateArgs("{\"Timestamp\":\"2026-10-26T15:42:00\",\"DeviceId\":\"device-1\",\"Raw\":256}");
 
         await adapter.HandleAsync(args);
@@ -29,7 +29,7 @@ public class TemperatureRecordingAdapterTests
     public async Task HandleAsync_InvalidTimestamp_ThrowsAndDoesNotSave()
     {
         var sensorService = new FakeTemperatureSensorService();
-        var adapter = new TemperatureRecordingAdapter(sensorService, NullLogger<TemperatureRecordingAdapter>.Instance);
+        var adapter = new TemperatureReadingAdapter(sensorService, NullLogger<TemperatureReadingAdapter>.Instance);
         var args = CreateArgs("{\"Timestamp\":\"not-a-date\",\"DeviceId\":\"device-1\",\"Raw\":256}");
 
         var exception = await Assert.ThrowsAsync<Exception>(() => adapter.HandleAsync(args));
@@ -54,9 +54,9 @@ public class TemperatureRecordingAdapterTests
 
     private sealed class FakeTemperatureSensorService : ITemperatureSensorService
     {
-        public List<SaveTemperatureRecordingCmd> SavedCommands { get; } = [];
+        public List<SaveTemperatureReadingCmd> SavedCommands { get; } = [];
 
-        public Task SaveTemperatureRecording(SaveTemperatureRecordingCmd saveCmd)
+        public Task SaveTemperatureReading(SaveTemperatureReadingCmd saveCmd)
         {
             SavedCommands.Add(saveCmd);
             return Task.CompletedTask;

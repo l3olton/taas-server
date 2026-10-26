@@ -5,9 +5,9 @@ using TaaSServer.Mqtt.DTOs;
 
 namespace TaaSServer.Mqtt.Adapters;
 
-public class TemperatureRecordingAdapter(
+public class TemperatureReadingAdapter(
     [FromServices] ITemperatureSensorService temperatureSensorService,
-    ILogger<TemperatureRecordingAdapter> logger) : BaseMqttAdapter<ReceiveTemperatureRecordingDto>
+    ILogger<TemperatureReadingAdapter> logger) : BaseMqttAdapter<ReceiveTemperatureRecordingDto>
 {
     public override string Topic => "temperature/recording";
 
@@ -16,7 +16,7 @@ public class TemperatureRecordingAdapter(
         try
         {
             var saveCmd = CreateSaveTemperatureRecordingCmd(receiveTemperatureRecordingDto);
-            await temperatureSensorService.SaveTemperatureRecording(saveCmd);
+            await temperatureSensorService.SaveTemperatureReading(saveCmd);
         } 
         catch (Exception ex)
         {
@@ -27,9 +27,9 @@ public class TemperatureRecordingAdapter(
             $"MQTT adapter: {receiveTemperatureRecordingDto.DeviceId} {receiveTemperatureRecordingDto.Raw} {receiveTemperatureRecordingDto.Timestamp}");
     }
     
-    private SaveTemperatureRecordingCmd CreateSaveTemperatureRecordingCmd(ReceiveTemperatureRecordingDto receiveTemperatureRecordingDto)
+    private SaveTemperatureReadingCmd CreateSaveTemperatureRecordingCmd(ReceiveTemperatureRecordingDto receiveTemperatureRecordingDto)
     {
-        return new SaveTemperatureRecordingCmd(
+        return new SaveTemperatureReadingCmd(
             DateTime.Parse(receiveTemperatureRecordingDto.Timestamp),
             receiveTemperatureRecordingDto.DeviceId,
             receiveTemperatureRecordingDto.Raw);

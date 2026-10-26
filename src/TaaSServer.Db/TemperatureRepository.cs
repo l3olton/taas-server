@@ -6,15 +6,15 @@ namespace TaaSServer.Db;
 
 public class TemperatureRepository(ILogger<TemperatureRepository> logger) : ITemperatureRepository
 {
-    public Task<TemperatureRecording> GetLatestAsync()
+    public Task<TemperatureReading> GetLatestAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task SaveAsync(TemperatureRecording temperatureRecording)
+    public Task SaveAsync(TemperatureReading temperatureReading)
     {
         logger.LogInformation(
-            $"SaveAsync called: {temperatureRecording.DeviceId} {temperatureRecording.Temperature} {temperatureRecording.Timestamp}");
+            $"SaveAsync called: {temperatureReading.DeviceId} {temperatureReading.Temperature} {temperatureReading.Timestamp}");
         return Task.CompletedTask;
     }
 }

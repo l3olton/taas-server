@@ -27,7 +27,7 @@ builder.Services.AddAWSService<IAmazonSecretsManager>();
 builder.Services.AddSingleton<ISecretClient, SecretsManagerSecretClient>();
 
 builder.Services.Configure<MqttBrokerOptions>(builder.Configuration.GetSection(MqttBrokerOptions.SectionName));
-builder.Services.AddSingleton<BaseMqttAdapter, TemperatureRecordingAdapter>();
+builder.Services.AddSingleton<BaseMqttAdapter, TemperatureReadingAdapter>();
 builder.Services.AddHostedService<MqttHostedService>();
 
 var app = builder.Build();
