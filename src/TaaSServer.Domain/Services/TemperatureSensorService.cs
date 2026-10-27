@@ -17,10 +17,10 @@ public class TemperatureSensorService(ITemperatureRepository temperatureReposito
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Domain Service: Error saving temperature reading");
+            throw new Exception($"Domain Service: Error saving temperature reading: {ex.Message}");
         }
 
         logger.LogInformation(
-            $"Domain Service: {temperatureReading.DeviceId} {temperatureReading.Temperature} {temperatureReading.Timestamp}");
+            $"Domain Service processed save command: DeviceId: {temperatureReading.DeviceId} Temperature: {temperatureReading.Temperature} Timestamp: {temperatureReading.Timestamp}");
     }
 }

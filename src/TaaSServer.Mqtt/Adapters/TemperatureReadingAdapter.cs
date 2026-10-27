@@ -24,7 +24,7 @@ public class TemperatureReadingAdapter(
         }
 
         logger.LogInformation(
-            $"MQTT adapter: {receiveTemperatureRecordingDto.DeviceId} {receiveTemperatureRecordingDto.Raw} {receiveTemperatureRecordingDto.Timestamp}");
+            $"MQTT adapter message received: DeviceId: {receiveTemperatureRecordingDto.DeviceId} Raw Reading: {receiveTemperatureRecordingDto.Raw} Timestamp: {receiveTemperatureRecordingDto.Timestamp}");
     }
     
     private SaveTemperatureReadingCmd CreateSaveTemperatureRecordingCmd(ReceiveTemperatureRecordingDto receiveTemperatureRecordingDto)
