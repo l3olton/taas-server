@@ -31,7 +31,7 @@ builder.Services.Configure<MqttBrokerOptions>(builder.Configuration.GetSection(M
 builder.Services.AddSingleton<BaseMqttAdapter, TemperatureReadingAdapter>();
 builder.Services.AddHostedService<MqttHostedService>();
 
-builder.Services.AddDbContextPool<TemperatureReadingContext>(opt =>
+builder.Services.AddPooledDbContextFactory<TemperatureReadingContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("dbConnectionString")));
 
 var app = builder.Build();

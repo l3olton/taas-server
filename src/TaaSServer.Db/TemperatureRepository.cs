@@ -1,20 +1,27 @@
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using TaaSServer.Domain.Entities;
 using TaaSServer.Domain.Ports;
 
 namespace TaaSServer.Db;
 
-public class TemperatureRepository(ILogger<TemperatureRepository> logger) : ITemperatureRepository
+public class TemperatureRepository(IDbContextFactory<TemperatureReadingContext> contextFactory) : ITemperatureRepository
 {
     public Task<TemperatureReading> GetLatestAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task SaveAsync(TemperatureReading temperatureReading)
+    public async Task SaveAsync(TemperatureReading temperatureReading)
     {
-        logger.LogInformation(
-            $"SaveAsync called: {temperatureReading.DeviceId} {temperatureReading.Temperature} {temperatureReading.Timestamp}");
-        return Task.CompletedTask;
+        await using var context = await contextFactory.CreateDbContextAsync();
+
+        context.TemperatureReadings.Add(new Entities.TemperatureReading
+        {
+            DeviceId = temperatureReading.DeviceId,
+            Temperature = temperatureReading.Temperature,
+            Timestamp = temperatureReading.Timestamp.ToUniversalTime()
+        });
+
+        await context.SaveChangesAsync();
     }
 }
